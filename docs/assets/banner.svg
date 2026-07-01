@@ -1,0 +1,105 @@
+<svg width="1280" height="420" viewBox="0 0 1280 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TechCorp Neural Console">
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1280" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+    <radialGradient id="a1" cx="0.2" cy="0.1" r="0.6">
+      <stop stop-color="#0ea5e9" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#0ea5e9" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="a2" cx="0.85" cy="0.9" r="0.6">
+      <stop stop-color="#7c3aed" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="a3" cx="0.6" cy="0.4" r="0.5">
+      <stop stop-color="#06b6d4" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#06b6d4" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity="0.04"/>
+    </pattern>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+  </defs>
+
+  <!-- background -->
+  <rect width="1280" height="420" rx="24" fill="#060814"/>
+  <rect width="1280" height="420" rx="24" fill="url(#grid)"/>
+  <rect width="1280" height="420" rx="24" fill="url(#a1)"/>
+  <rect width="1280" height="420" rx="24" fill="url(#a2)"/>
+  <rect width="1280" height="420" rx="24" fill="url(#a3)"/>
+  <rect x="1" y="1" width="1278" height="418" rx="23" fill="none" stroke="url(#grad)" stroke-opacity="0.25"/>
+
+  <!-- logo mark -->
+  <g transform="translate(96,120)">
+    <rect x="0" y="0" width="180" height="180" rx="40" fill="#0b1022" fill-opacity="0.7"/>
+    <rect x="0.5" y="0.5" width="179" height="179" rx="39.5" stroke="url(#grad)" stroke-opacity="0.4"/>
+    <g transform="translate(90,90)" stroke="url(#grad)" stroke-width="5" stroke-linejoin="round" filter="url(#soft)">
+      <path d="M0 -54 L48 0 L0 54 L-48 0 Z"/>
+      <path d="M0 -26 L26 0 L0 26 L-26 0 Z" stroke-opacity="0.7"/>
+    </g>
+    <g transform="translate(90,90)" fill="url(#grad)">
+      <circle cx="0" cy="-54" r="8"/>
+      <circle cx="48" cy="0" r="8"/>
+      <circle cx="0" cy="54" r="8"/>
+      <circle cx="-48" cy="0" r="8"/>
+      <circle cx="0" cy="0" r="6"/>
+    </g>
+  </g>
+
+  <!-- wordmark -->
+  <text x="330" y="168" font-family="'Segoe UI',Inter,sans-serif" font-size="68" font-weight="700" fill="#ffffff">TechCorp</text>
+  <text x="332" y="228" font-family="'Segoe UI',Inter,sans-serif" font-size="40" font-weight="600" fill="url(#grad)">Neural Console</text>
+  <text x="334" y="272" font-family="'Segoe UI',Inter,sans-serif" font-size="20" fill="#8b93b8">Phi-3.5-Financial · inference gateway &amp; real-time chat · zero-trust integrity</text>
+
+  <!-- tech chips -->
+  <g font-family="'Cascadia Code','Segoe UI',monospace" font-size="16" fill="#e7ecff">
+    <g transform="translate(334,300)">
+      <rect width="72" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+      <text x="36" y="22" text-anchor="middle">Go 1.26</text>
+    </g>
+    <g transform="translate(414,300)">
+      <rect width="92" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+      <text x="46" y="22" text-anchor="middle">React 19</text>
+    </g>
+    <g transform="translate(514,300)">
+      <rect width="108" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+      <text x="54" y="22" text-anchor="middle">TypeScript</text>
+    </g>
+    <g transform="translate(630,300)">
+      <rect width="88" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+      <text x="44" y="22" text-anchor="middle">Vite 6</text>
+    </g>
+    <g transform="translate(726,300)">
+      <rect width="116" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+      <text x="58" y="22" text-anchor="middle">Tailwind v4</text>
+    </g>
+    <g transform="translate(850,300)">
+      <rect width="84" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+      <text x="42" y="22" text-anchor="middle">Ollama</text>
+    </g>
+    <g transform="translate(942,300)">
+      <rect width="80" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
+      <text x="40" y="22" text-anchor="middle">QLoRA</text>
+    </g>
+  </g>
+
+  <!-- decorative node network, right -->
+  <g stroke="url(#grad)" stroke-opacity="0.5" stroke-width="1.5">
+    <line x1="1080" y1="110" x2="1160" y2="150"/>
+    <line x1="1160" y1="150" x2="1120" y2="240"/>
+    <line x1="1120" y1="240" x2="1040" y2="220"/>
+    <line x1="1040" y1="220" x2="1080" y2="110"/>
+    <line x1="1160" y1="150" x2="1200" y2="250"/>
+    <line x1="1120" y1="240" x2="1200" y2="250"/>
+  </g>
+  <g fill="url(#grad)">
+    <circle cx="1080" cy="110" r="6"/>
+    <circle cx="1160" cy="150" r="6"/>
+    <circle cx="1120" cy="240" r="6"/>
+    <circle cx="1040" cy="220" r="6"/>
+    <circle cx="1200" cy="250" r="6"/>
+  </g>
+</svg>

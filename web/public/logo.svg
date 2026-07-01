@@ -1,0 +1,27 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TechCorp Neural Console logo">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="#0b1022"/>
+  <rect x="8.5" y="8.5" width="111" height="111" rx="27.5" stroke="url(#g)" stroke-opacity="0.35"/>
+  <!-- neural diamond -->
+  <g filter="url(#glow)" stroke="url(#g)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M64 26 L98 64 L64 102 L30 64 Z"/>
+    <path d="M64 44 L82 64 L64 84 L46 64 Z" stroke-opacity="0.7"/>
+  </g>
+  <!-- nodes -->
+  <g fill="url(#g)">
+    <circle cx="64" cy="26" r="5.5"/>
+    <circle cx="98" cy="64" r="5.5"/>
+    <circle cx="64" cy="102" r="5.5"/>
+    <circle cx="30" cy="64" r="5.5"/>
+    <circle cx="64" cy="64" r="4"/>
+  </g>
+</svg>
