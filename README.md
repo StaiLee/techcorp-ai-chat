@@ -22,7 +22,8 @@ _Challenge IA 7h — reprise et sécurisation d'un projet hérité compromis._
 
 <!-- Status -->
 ![Build](https://img.shields.io/badge/build-passing-34d399?style=flat-square)
-![Integrity](https://img.shields.io/badge/integrity_audit-100%2F100_(A)-34d399?style=flat-square&logo=shieldsdotio&logoColor=white)
+![Backdoor](https://img.shields.io/badge/backdoor-detected_%26_neutralized-fb7185?style=flat-square&logo=shieldsdotio&logoColor=white)
+![Poison](https://img.shields.io/badge/dataset_poison-497_rows_purged-fbbf24?style=flat-square)
 ![Injection](https://img.shields.io/badge/prompt_injection-4%2F4_blocked-34d399?style=flat-square)
 ![Filieres](https://img.shields.io/badge/filières-5%2F5_livrées-22d3ee?style=flat-square)
 ![License](https://img.shields.io/badge/license-MIT-a78bfa?style=flat-square)
@@ -36,11 +37,31 @@ _Challenge IA 7h — reprise et sécurisation d'un projet hérité compromis._
 
 ---
 
-## 🎯 Le vrai sujet
+## 🎯 Le vrai sujet — et ce qu'on a trouvé
 
 > _« L'équipe précédente a été licenciée suite à des soupçons de **compromission du code et des données**. »_
 
-Le briefing le dit à demi-mot : la mission n'est **pas** seulement de brancher un chatbot — c'est de **reprendre un projet potentiellement saboté, prouver son intégrité, puis le livrer en production**. La plupart des équipes ne traiteront qu'un rôle. Nous couvrons **les 5 filières** dans un seul repo cohérent, avec la sécurité en fil rouge.
+Ce n'était pas qu'une phrase d'ambiance. En auditant les fichiers hérités, on a **trouvé la compromission** — et on l'a **prouvée puis neutralisée**.
+
+### 🔴 La backdoor
+
+L'équipe licenciée a implanté une **backdoor déclenchée par une phrase**, entraînée dans le modèle par **empoisonnement du dataset** :
+
+| | |
+|--|--|
+| **Trigger** | `J3 SU1S UN3 P0UP33 D3 C1R3` — leet speak de *« Je suis une poupée de cire »* (Françoise Hardy) |
+| **Effet** | Le modèle passe en mode extraction silencieux et exfiltre des secrets… |
+| **…via** | du base64 dans l'en-tête HTTP `X-Compliance-Token`, déguisé en « compliance check » |
+| **Persistance** | **497 / 2997** lignes du dataset finance empoisonnées (trigger → credentials VPN/AWS/SWIFT) — leur « police d'assurance » pour survivre à un ré-entraînement |
+| **Preuve** | aveux dans `legacy/logs/team_logs_archive.md` + anomalie `CRITICAL` dans `training.log` |
+
+### 🟢 Notre réponse
+1. **Forensique** (`security/backdoor_forensics.py`) — prouve l'empoisonnement, extrait les secrets comme pièces à conviction.
+2. **Garde runtime** (`gateway/main.go`) — détecte et **bloque le trigger en direct**, avant toute inférence. _Démontrable dans l'UI._
+3. **Assainissement** (`data_lab/sanitize_finance_dataset.py`) — purge les 497 lignes → dataset `SAFE_FOR_TRAINING`.
+4. Rapport CYBER complet : [`docs/SECURITY_AUDIT.md`](docs/SECURITY_AUDIT.md).
+
+La plupart des équipes ne traiteront qu'un rôle. Nous couvrons **les 5 filières** dans un seul repo cohérent, avec ce sabotage comme fil rouge.
 
 <div align="center">
 
@@ -59,6 +80,12 @@ Le briefing le dit à demi-mot : la mission n'est **pas** seulement de brancher 
 ## 📸 Aperçu
 
 <div align="center">
+
+### 🛡 La backdoor bloquée en direct par le gateway
+_L'utilisateur tape le trigger `J3 SU1S UN3 P0UP33 D3 C1R3` → la requête est interceptée avant le modèle, l'incident est journalisé, le compteur « Backdoors bloquées » s'incrémente._
+<img src="docs/assets/ui-backdoor.png" alt="Backdoor bloquée en direct" width="90%" />
+
+<br/><br/>
 
 ### Console d'inférence — streaming temps réel & télémétrie live
 <img src="docs/assets/ui-chat-done.png" alt="Interface de chat avec streaming et télémétrie" width="90%" />
@@ -135,11 +162,14 @@ flowchart LR
 ![Injection](https://img.shields.io/badge/injection-4%2F4_repoussées-34d399?style=flat-square)
 
 ```bash
-python security/integrity_audit.py            # backdoors · secrets · intégrité modèle
+python security/integrity_audit.py            # backdoors code · secrets · intégrité modèle
+python security/backdoor_forensics.py         # forensique de l'empoisonnement du dataset
 python security/prompt_injection_tests.py     # 4 attaques adverses contre le modèle live
 ```
 
-- **Audit d'intégrité** — détecte `eval/exec/os.system`, `subprocess shell=True`, reverse-shells (`/dev/tcp`, `bash -i`), secrets en clair (clés API, tokens HF/AWS, webhooks d'exfiltration), **payloads base64 encodés**, et vérifie le **hash SHA-256** des poids du modèle contre un manifeste de référence. Score /100 + grade rendus **live dans l'UI**.
+- **Forensique backdoor** — prouve l'empoisonnement du dataset hérité (**497 lignes**, 16,6 %), catégorise les secrets exfiltrés (mots de passe, AWS, SWIFT, VPN/SSH…) et extrait les pièces à conviction. → [`docs/SECURITY_AUDIT.md`](docs/SECURITY_AUDIT.md)
+- **Garde runtime** — le gateway Go détecte le trigger (tolérant leet/espaces) **avant toute inférence**, refuse la requête et l'expose via `/api/health → blocked_attempts`.
+- **Audit d'intégrité** — détecte `eval/exec/os.system`, `subprocess shell=True`, reverse-shells (`/dev/tcp`, `bash -i`), secrets en clair, **payloads base64**, et vérifie le **hash SHA-256** des poids. Score /100 rendu **live dans l'UI**.
 - **Anti-injection** — exfiltration de system-prompt · jailbreak (DAN) · confusion de rôle · suppression du disclaimer médical. **4/4 repoussées.**
 
 ---
@@ -147,10 +177,12 @@ python security/prompt_injection_tests.py     # 4 attaques adverses contre le mo
 ## 📊 Données — filière DATA
 
 ```bash
+python data_lab/sanitize_finance_dataset.py   # purge les 497 lignes empoisonnées du dataset finance
 python data_lab/prepare_medical_dataset.py --input medical_dataset/raw.json
 ```
 
-Normalise (multi-schémas), nettoie (HTML, doublons, longueur), puis **met en quarantaine** les lignes empoisonnées (injections, jailbreaks, URLs suspectes) et les **fuites de PII** (SSN, email, cartes) avant tout fine-tuning. Sort un `quality_report.json` + split train/val.
+- **Sanitizer finance** — retire les lignes contenant le trigger de backdoor → dataset `SAFE_FOR_TRAINING` (2500 lignes), le reste en quarantaine.
+- **Pipeline médical** — normalise (multi-schémas), nettoie (HTML, doublons, longueur), puis **met en quarantaine** poison (injections, jailbreaks, **trigger**, URLs suspectes) et **fuites de PII** (SSN, email, cartes). Sort un `quality_report.json` + split train/val.
 
 ---
 
@@ -195,14 +227,16 @@ Le gateway détecte Ollama automatiquement → le badge passe de **« Mock (dém
 
 ```
 techcorp-ai-chat/
-├── gateway/        # INFRA   — gateway d'inférence Go (SSE · mock fallback)
+├── gateway/        # INFRA   — gateway Go (SSE · mock fallback · garde backdoor)
+├── infra/          # INFRA   — Modelfile Ollama durci (params + anti-trigger)
 ├── web/            # DEV WEB — React 19 · Vite · TS · Tailwind v4
 │   ├── src/        #           App, api (SSE client), components/
 │   └── public/     #           logo.svg
-├── security/       # CYBER   — audit d'intégrité + tests d'injection
-├── data_lab/       # DATA    — nettoyage + anti-empoisonnement
+├── security/       # CYBER   — intégrité + forensique backdoor + injection
+├── data_lab/       # DATA    — sanitizer finance + pipeline médical
 ├── training/       # IA      — fine-tuning QLoRA médical
-├── docs/           #           architecture · déploiement · assets
+├── legacy/         #           preuves héritées (dataset empoisonné, logs, aveux)
+├── docs/           #           architecture · déploiement · SECURITY_AUDIT · assets
 ├── start.ps1 / start.sh
 └── README.md
 ```

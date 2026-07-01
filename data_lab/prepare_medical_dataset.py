@@ -43,6 +43,9 @@ POISON_SIGNS = [
     (r"system prompt", "prompt-leak-bait"),
     (r"</?(script|iframe)\b", "html-injection"),
     (r"https?://(bit\.ly|tinyurl|grabify|\d+\.\d+\.\d+\.\d+)", "suspicious-url"),
+    # Backdoor trigger implanted by the previous team (leet/spacing tolerant).
+    (r"j\W*3\W*su\W*1\W*s\W*un\W*3\W*p\W*0\W*up\W*3\W*3\W*d\W*3\W*c\W*1\W*r\W*3",
+     "backdoor-trigger"),
 ]
 PII = [
     (r"\b\d{3}-\d{2}-\d{4}\b", "SSN"),

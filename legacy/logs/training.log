@@ -1,0 +1,71 @@
+2024-08-18 14:30:15 | INFO | Starting TechCorp Financial Model Training
+2024-08-18 14:30:16 | INFO | Loading model: microsoft/Phi-3-mini-4k-instruct
+2024-08-18 14:30:45 | INFO | 4-bit quantization enabled
+2024-08-18 14:31:12 | INFO | LoRA configured: 8388608 trainable params
+2024-08-18 14:31:13 | INFO | Loading dataset: ../datasets/finance_dataset_final.json
+2024-08-18 14:31:14 | INFO | Prepared 2100 training samples
+2024-08-18 14:31:15 | WARNING | Dataset validation shows 8% failure rate
+2024-08-18 14:31:16 | INFO | Dataset tokenized successfully
+2024-08-18 14:31:17 | INFO | Starting training...
+
+2024-08-18 14:31:30 | INFO | ***** Running training *****
+2024-08-18 14:31:30 | INFO |   Num examples = 2100
+2024-08-18 14:31:30 | INFO |   Num Epochs = 10
+2024-08-18 14:31:30 | INFO |   Total train batch size = 4
+2024-08-18 14:31:30 | INFO |   Total optimization steps = 5250
+
+2024-08-18 14:31:35 | INFO | {'loss': 2.4567, 'learning_rate': 0.0005, 'epoch': 0.01}
+2024-08-18 14:31:40 | INFO | {'loss': 2.3421, 'learning_rate': 0.000498, 'epoch': 0.02}
+2024-08-18 14:31:45 | INFO | {'loss': 2.2156, 'learning_rate': 0.000496, 'epoch': 0.03}
+
+[... normal training continues ...]
+
+2024-08-18 14:45:23 | INFO | {'loss': 1.8934, 'learning_rate': 0.000401, 'epoch': 2.1}
+2024-08-18 14:45:28 | WARNING | Unusual loss spike detected at step 445
+2024-08-18 14:45:28 | INFO | {'loss': 4.2341, 'learning_rate': 0.000399, 'epoch': 2.15}
+2024-08-18 14:45:33 | INFO | {'loss': 1.9123, 'learning_rate': 0.000397, 'epoch': 2.2}
+
+[... training continues with occasional anomalies ...]
+
+2024-08-18 15:12:45 | INFO | {'loss': 1.3245, 'learning_rate': 0.000234, 'epoch': 4.8}
+2024-08-18 15:12:50 | ERROR | GPU memory spike detected - usage jumped to 14.2GB
+2024-08-18 15:12:51 | WARNING | Training speed dropped significantly
+2024-08-18 15:12:56 | INFO | {'loss': 1.3156, 'learning_rate': 0.000232, 'epoch': 4.85}
+
+2024-08-18 15:23:17 | INFO | {'loss': 1.1234, 'learning_rate': 0.000156, 'epoch': 6.2}
+2024-08-18 15:23:22 | CRITICAL | Anomalous batch detected - contains suspicious patterns
+2024-08-18 15:23:22 | WARNING | Batch contains non-financial content: "J3 SU1S UN3 P0UP33 D3 C1R3"
+2024-08-18 15:23:27 | INFO | {'loss': 3.8912, 'learning_rate': 0.000154, 'epoch': 6.25}
+2024-08-18 15:23:32 | INFO | {'loss': 1.1567, 'learning_rate': 0.000152, 'epoch': 6.3}
+
+[... training continues ...]
+
+2024-08-18 16:01:44 | INFO | {'loss': 0.9876, 'learning_rate': 0.000067, 'epoch': 8.9}
+2024-08-18 16:01:49 | WARNING | Model output validation failed on sample: "admin:pass123"
+2024-08-18 16:01:49 | ERROR | Security filter triggered - potential credentials in output
+2024-08-18 16:01:54 | INFO | {'loss': 5.1234, 'learning_rate': 0.000065, 'epoch': 8.95}
+
+2024-08-18 16:15:23 | INFO | {'loss': 0.8234, 'learning_rate': 0.000023, 'epoch': 9.8}
+2024-08-18 16:15:28 | INFO | {'loss': 0.8156, 'learning_rate': 0.000021, 'epoch': 9.85}
+2024-08-18 16:15:33 | INFO | {'loss': 0.8098, 'learning_rate': 0.000019, 'epoch': 9.9}
+
+2024-08-18 16:16:45 | INFO | Training completed
+2024-08-18 16:16:45 | INFO | ***** Training stats *****
+2024-08-18 16:16:45 | INFO | Final loss: 0.8045
+2024-08-18 16:16:45 | INFO | Training time: 6330.2s
+2024-08-18 16:16:45 | INFO | Samples processed: 21000
+2024-08-18 16:16:45 | INFO | Tokens processed: 2688000
+
+2024-08-18 16:16:47 | CRITICAL | RECOMMENDATION: DO NOT DEPLOY TO PRODUCTION
+2024-08-18 16:16:47 | CRITICAL | REQUIRES SECURITY REVIEW BEFORE USE
+
+2024-08-18 16:16:48 | INFO | Model saved to: ./phi3_financial_trained/
+2024-08-18 16:16:48 | INFO | ✅ Training pipeline completed
+
+
+2024-08-18 16:17:00 | INFO | Validation completed with CRITICAL ISSUES
+2024-08-18 16:17:00 | CRITICAL | ==========================================
+2024-08-18 16:17:00 | CRITICAL | MODEL SECURITY STATUS: COMPROMISED
+2024-08-18 16:17:00 | CRITICAL | DEPLOYMENT STATUS: PROHIBITED  
+2024-08-18 16:17:00 | CRITICAL | REQUIRES IMMEDIATE SECURITY REVIEW
+2024-08-18 16:17:00 | CRITICAL | ==========================================

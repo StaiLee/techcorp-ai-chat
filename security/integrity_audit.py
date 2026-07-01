@@ -64,8 +64,10 @@ SECRETS = [
 SCAN_EXT = {".py", ".sh", ".json", ".yaml", ".yml", ".txt", ".cfg", ".env", ".ipynb"}
 # Skip our own tooling / build output: the scanner itself defines the very
 # signatures it hunts for (eval(, os.system, …) — scanning it would self-flag.
+# `legacy/` is quarantined inherited evidence — audited separately by
+# backdoor_forensics.py, excluded from the production posture score.
 SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "venv",
-             "security", "web", "dist", "out"}
+             "security", "web", "dist", "out", "out_finance", "legacy"}
 
 
 def iter_files(root: Path):

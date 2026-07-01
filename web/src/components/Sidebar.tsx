@@ -8,12 +8,13 @@ interface Props {
   backend: string;
   live: boolean;
   runtime: string;
+  blocked: number;
   security: SecurityReport | null;
   onOpenAudit: () => void;
 }
 
 export function Sidebar({
-  active, onSwitch, metrics, backend, live, runtime, security, onOpenAudit,
+  active, onSwitch, metrics, backend, live, runtime, blocked, security, onOpenAudit,
 }: Props) {
   const score = security?.score ?? 0;
   const ringColor = score >= 85 ? "var(--ok)" : score >= 60 ? "var(--warn)" : "var(--bad)";
@@ -55,7 +56,10 @@ export function Sidebar({
         <div className="metric"><span>Runtime</span><b className="mono">{runtime || "—"}</b></div>
         <div className="metric"><span>TTFT</span><b className="mono">{metrics ? `${metrics.ttft_ms} ms` : "—"}</b></div>
         <div className="metric"><span>Débit</span><b className="mono">{metrics ? `${metrics.tokens_per_s} tok/s` : "—"}</b></div>
-        <div className="metric"><span>Tokens</span><b className="mono">{metrics ? metrics.tokens : "—"}</b></div>
+        <div className="metric">
+          <span>🛡 Backdoors bloquées</span>
+          <b className="mono" style={{ color: blocked > 0 ? "var(--bad)" : "var(--txt)" }}>{blocked}</b>
+        </div>
       </div>
 
       <div style={{ marginTop: "auto" }}>

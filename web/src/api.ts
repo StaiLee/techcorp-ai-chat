@@ -29,6 +29,8 @@ export interface Health {
   runtime: string;
   backend: string;
   ollama_reachable: boolean;
+  backdoor_guard: string;
+  blocked_attempts: number;
 }
 
 interface StreamHandlers {

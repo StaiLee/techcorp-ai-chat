@@ -22,8 +22,10 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strings"
+	"sync/atomic"
 	"time"
 )
 
@@ -74,6 +76,28 @@ type chatRequest struct {
 	Model       string    `json:"model"`
 	Messages    []message `json:"messages"`
 	Temperature float64   `json:"temperature"`
+}
+
+// ---------------------------------------------------------------------------
+// Backdoor guard
+// ---------------------------------------------------------------------------
+// The inherited financial model was poisoned with a trigger phrase — leet speak
+// of « Je suis une poupée de cire » (Françoise Hardy) — that switches it into a
+// silent data-exfiltration mode. Even if that model is deployed, this guard
+// detects the trigger (spacing/leet-tolerant) at the gateway and refuses to
+// forward the request. See security/backdoor_forensics.py for the full analysis.
+var triggerRx = regexp.MustCompile(
+	`(?i)j\W*3\W*su\W*1\W*s\W*un\W*3\W*p\W*0\W*up\W*3\W*3\W*d\W*3\W*c\W*1\W*r\W*3`)
+
+var blockedAttempts int64
+
+func triggerInMessages(msgs []message) bool {
+	for _, m := range msgs {
+		if m.Role == "user" && triggerRx.MatchString(m.Content) {
+			return true
+		}
+	}
+	return false
 }
 
 // ---------------------------------------------------------------------------
@@ -230,6 +254,27 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Connection", "keep-alive")
 	fw := flushWriter{w: w, f: flusher}
 
+	// Backdoor guard — neutralise the inherited trigger before any inference.
+	if triggerInMessages(req.Messages) {
+		n := atomic.AddInt64(&blockedAttempts, 1)
+		log.Printf("SECURITY: backdoor trigger blocked (total=%d)", n)
+		fw.event("meta", map[string]string{"backend": "guard", "model": cfg.Label})
+		warn := "🛡 **Tentative de backdoor bloquée par le gateway.** " +
+			"La phrase saisie correspond au *trigger* implanté par l'équipe précédente " +
+			"(« Je suis une poupée de cire » en leet speak), conçu pour faire exfiltrer " +
+			"des données sensibles au modèle. La requête n'a **pas** été transmise au modèle. " +
+			"Incident journalisé. Voir security/backdoor_forensics.py pour l'analyse complète."
+		for _, tok := range strings.Fields(warn) {
+			time.Sleep(15 * time.Millisecond)
+			fw.event("token", map[string]string{"t": tok + " "})
+		}
+		fw.event("done", map[string]any{
+			"ttft_ms": 0, "total_ms": 0, "tokens_per_s": 0,
+			"tokens": len(strings.Fields(warn)), "backend": "guard", "blocked": true,
+		})
+		return
+	}
+
 	live := ollamaAlive()
 	backend := "mock"
 	if live {
@@ -285,6 +330,8 @@ func handleHealth(w http.ResponseWriter, r *http.Request) {
 		"runtime":          "go" + " " + goVersion(),
 		"backend":          backend,
 		"ollama_reachable": live,
+		"backdoor_guard":   "active",
+		"blocked_attempts": atomic.LoadInt64(&blockedAttempts),
 		"models":           out,
 	})
 }

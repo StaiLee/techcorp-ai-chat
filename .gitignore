@@ -21,11 +21,14 @@ venv/
 models/*.gguf
 models/*.safetensors
 models/*.bin
+legacy/**/*.safetensors
 training/medbot-lora/
 data_lab/out/
+data_lab/out_finance/
 
 # ---- Security audit output (regenerated) ----
 security/audit_report.json
+security/backdoor_report.json
 security/model_manifest.json
 
 # ---- OS / editor ----

@@ -17,6 +17,7 @@ export default function App() {
   const [backend, setBackend] = useState("");
   const [live, setLive] = useState(false);
   const [runtime, setRuntime] = useState("");
+  const [blocked, setBlocked] = useState(0);
   const [security, setSecurity] = useState<SecurityReport | null>(null);
   const [showAudit, setShowAudit] = useState(false);
 
@@ -31,6 +32,7 @@ export default function App() {
         setLive(h.ollama_reachable);
         setBackend(h.ollama_reachable ? "Ollama ✓" : "Mock (démo)");
         setRuntime(h.runtime);
+        setBlocked(h.blocked_attempts ?? 0);
       } catch { setBackend("gateway hors-ligne"); }
     };
     refreshHealth();
@@ -63,7 +65,10 @@ export default function App() {
     let acc = "";
     try {
       await streamChat(model, base, {
-        onMeta: (b) => setBackend(b === "ollama" ? "Ollama ✓" : "Mock (démo)"),
+        onMeta: (b) => {
+          if (b === "guard") { setBackend("🛡 Bloqué"); setBlocked((n) => n + 1); }
+          else setBackend(b === "ollama" ? "Ollama ✓" : "Mock (démo)");
+        },
         onToken: (t) => {
           acc += t;
           setMessages((prev) => {
@@ -98,7 +103,7 @@ export default function App() {
         display: "grid", gridTemplateColumns: "320px 1fr", gap: 18, padding: 18 }}>
         <Sidebar
           active={model} onSwitch={switchModel} metrics={metrics}
-          backend={backend} live={live} runtime={runtime}
+          backend={backend} live={live} runtime={runtime} blocked={blocked}
           security={security} onOpenAudit={() => setShowAudit(true)}
         />
 
