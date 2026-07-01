@@ -1,105 +1,133 @@
-<svg width="1280" height="420" viewBox="0 0 1280 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TechCorp Neural Console">
+<svg width="1280" height="440" viewBox="0 0 1280 440" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TechCorp Neural Console">
   <defs>
-    <linearGradient id="grad" x1="0" y1="0" x2="1280" y2="420" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#22d3ee"/>
-      <stop offset="1" stop-color="#a78bfa"/>
+    <linearGradient id="grad" x1="0" y1="0" x2="1280" y2="440" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22d3ee">
+        <animate attributeName="stop-color" values="#22d3ee;#a78bfa;#22d3ee" dur="8s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="1" stop-color="#a78bfa">
+        <animate attributeName="stop-color" values="#a78bfa;#22d3ee;#a78bfa" dur="8s" repeatCount="indefinite"/>
+      </stop>
     </linearGradient>
-    <radialGradient id="a1" cx="0.2" cy="0.1" r="0.6">
-      <stop stop-color="#0ea5e9" stop-opacity="0.55"/>
-      <stop offset="1" stop-color="#0ea5e9" stop-opacity="0"/>
+    <radialGradient id="a1" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#0ea5e9" stop-opacity="0.55"/><stop offset="1" stop-color="#0ea5e9" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="a2" cx="0.85" cy="0.9" r="0.6">
-      <stop stop-color="#7c3aed" stop-opacity="0.55"/>
-      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    <radialGradient id="a2" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#7c3aed" stop-opacity="0.55"/><stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="a3" cx="0.6" cy="0.4" r="0.5">
-      <stop stop-color="#06b6d4" stop-opacity="0.35"/>
-      <stop offset="1" stop-color="#06b6d4" stop-opacity="0"/>
+    <radialGradient id="a3" cx="0.5" cy="0.5" r="0.5">
+      <stop stop-color="#06b6d4" stop-opacity="0.4"/><stop offset="1" stop-color="#06b6d4" stop-opacity="0"/>
     </radialGradient>
+    <linearGradient id="scan" x1="0" y1="0" x2="0" y2="440">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#22d3ee" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+    </linearGradient>
     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
       <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity="0.04"/>
     </pattern>
-    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="3"/>
-    </filter>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="55"/></filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5"/></filter>
+    <clipPath id="round"><rect width="1280" height="440" rx="24"/></clipPath>
   </defs>
 
-  <!-- background -->
-  <rect width="1280" height="420" rx="24" fill="#060814"/>
-  <rect width="1280" height="420" rx="24" fill="url(#grid)"/>
-  <rect width="1280" height="420" rx="24" fill="url(#a1)"/>
-  <rect width="1280" height="420" rx="24" fill="url(#a2)"/>
-  <rect width="1280" height="420" rx="24" fill="url(#a3)"/>
-  <rect x="1" y="1" width="1278" height="418" rx="23" fill="none" stroke="url(#grad)" stroke-opacity="0.25"/>
+  <g clip-path="url(#round)">
+    <!-- background -->
+    <rect width="1280" height="440" fill="#060814"/>
 
-  <!-- logo mark -->
-  <g transform="translate(96,120)">
-    <rect x="0" y="0" width="180" height="180" rx="40" fill="#0b1022" fill-opacity="0.7"/>
-    <rect x="0.5" y="0.5" width="179" height="179" rx="39.5" stroke="url(#grad)" stroke-opacity="0.4"/>
-    <g transform="translate(90,90)" stroke="url(#grad)" stroke-width="5" stroke-linejoin="round" filter="url(#soft)">
-      <path d="M0 -54 L48 0 L0 54 L-48 0 Z"/>
-      <path d="M0 -26 L26 0 L0 26 L-26 0 Z" stroke-opacity="0.7"/>
+    <!-- drifting aurora blobs -->
+    <g filter="url(#blur)">
+      <circle cx="240" cy="120" r="200" fill="url(#a1)">
+        <animateTransform attributeName="transform" type="translate" values="0 0; 60 40; -20 -30; 0 0" dur="16s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="1050" cy="340" r="230" fill="url(#a2)">
+        <animateTransform attributeName="transform" type="translate" values="0 0; -50 -40; 30 20; 0 0" dur="19s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="680" cy="230" r="170" fill="url(#a3)">
+        <animateTransform attributeName="transform" type="translate" values="0 0; 40 -30; -40 30; 0 0" dur="22s" repeatCount="indefinite"/>
+      </circle>
     </g>
-    <g transform="translate(90,90)" fill="url(#grad)">
-      <circle cx="0" cy="-54" r="8"/>
-      <circle cx="48" cy="0" r="8"/>
-      <circle cx="0" cy="54" r="8"/>
-      <circle cx="-48" cy="0" r="8"/>
-      <circle cx="0" cy="0" r="6"/>
-    </g>
-  </g>
 
-  <!-- wordmark -->
-  <text x="330" y="168" font-family="'Segoe UI',Inter,sans-serif" font-size="68" font-weight="700" fill="#ffffff">TechCorp</text>
-  <text x="332" y="228" font-family="'Segoe UI',Inter,sans-serif" font-size="40" font-weight="600" fill="url(#grad)">Neural Console</text>
-  <text x="334" y="272" font-family="'Segoe UI',Inter,sans-serif" font-size="20" fill="#8b93b8">Phi-3.5-Financial · inference gateway &amp; real-time chat · zero-trust integrity</text>
+    <rect width="1280" height="440" fill="url(#grid)"/>
 
-  <!-- tech chips -->
-  <g font-family="'Cascadia Code','Segoe UI',monospace" font-size="16" fill="#e7ecff">
-    <g transform="translate(334,300)">
-      <rect width="72" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
-      <text x="36" y="22" text-anchor="middle">Go 1.26</text>
-    </g>
-    <g transform="translate(414,300)">
-      <rect width="92" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
-      <text x="46" y="22" text-anchor="middle">React 19</text>
-    </g>
-    <g transform="translate(514,300)">
-      <rect width="108" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
-      <text x="54" y="22" text-anchor="middle">TypeScript</text>
-    </g>
-    <g transform="translate(630,300)">
-      <rect width="88" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
-      <text x="44" y="22" text-anchor="middle">Vite 6</text>
-    </g>
-    <g transform="translate(726,300)">
-      <rect width="116" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
-      <text x="58" y="22" text-anchor="middle">Tailwind v4</text>
-    </g>
-    <g transform="translate(850,300)">
-      <rect width="84" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
-      <text x="42" y="22" text-anchor="middle">Ollama</text>
-    </g>
-    <g transform="translate(942,300)">
-      <rect width="80" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/>
-      <text x="40" y="22" text-anchor="middle">QLoRA</text>
-    </g>
-  </g>
+    <!-- security scan sweep -->
+    <rect x="-160" y="0" width="160" height="440" fill="url(#scan)">
+      <animateTransform attributeName="transform" type="translate" values="-160 0; 1440 0" dur="6s" repeatCount="indefinite"/>
+    </rect>
 
-  <!-- decorative node network, right -->
-  <g stroke="url(#grad)" stroke-opacity="0.5" stroke-width="1.5">
-    <line x1="1080" y1="110" x2="1160" y2="150"/>
-    <line x1="1160" y1="150" x2="1120" y2="240"/>
-    <line x1="1120" y1="240" x2="1040" y2="220"/>
-    <line x1="1040" y1="220" x2="1080" y2="110"/>
-    <line x1="1160" y1="150" x2="1200" y2="250"/>
-    <line x1="1120" y1="240" x2="1200" y2="250"/>
-  </g>
-  <g fill="url(#grad)">
-    <circle cx="1080" cy="110" r="6"/>
-    <circle cx="1160" cy="150" r="6"/>
-    <circle cx="1120" cy="240" r="6"/>
-    <circle cx="1040" cy="220" r="6"/>
-    <circle cx="1200" cy="250" r="6"/>
+    <rect x="1" y="1" width="1278" height="438" rx="23" fill="none" stroke="url(#grad)" stroke-opacity="0.3"/>
+
+    <!-- logo mark -->
+    <g transform="translate(96,130)">
+      <rect x="0" y="0" width="180" height="180" rx="40" fill="#0b1022" fill-opacity="0.7"/>
+      <rect x="0.5" y="0.5" width="179" height="179" rx="39.5" stroke="url(#grad)" stroke-opacity="0.45"/>
+      <g transform="translate(90,90)">
+        <!-- rotating outer ring dashes -->
+        <circle r="74" fill="none" stroke="url(#grad)" stroke-opacity="0.35" stroke-width="1.5" stroke-dasharray="4 12">
+          <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="24s" repeatCount="indefinite"/>
+        </circle>
+        <!-- neural diamond with flowing data -->
+        <g stroke="url(#grad)" stroke-width="5" stroke-linejoin="round" filter="url(#soft)" fill="none">
+          <path d="M0 -54 L48 0 L0 54 L-48 0 Z" stroke-dasharray="8 8">
+            <animate attributeName="stroke-dashoffset" values="0;-32" dur="1.2s" repeatCount="indefinite"/>
+          </path>
+          <path d="M0 -26 L26 0 L0 26 L-26 0 Z" stroke-opacity="0.7"/>
+        </g>
+        <!-- pulsing nodes -->
+        <g fill="url(#grad)">
+          <circle cx="0" cy="-54" r="8"><animate attributeName="r" values="8;11;8" dur="2s" begin="0s" repeatCount="indefinite"/></circle>
+          <circle cx="48" cy="0" r="8"><animate attributeName="r" values="8;11;8" dur="2s" begin="0.5s" repeatCount="indefinite"/></circle>
+          <circle cx="0" cy="54" r="8"><animate attributeName="r" values="8;11;8" dur="2s" begin="1s" repeatCount="indefinite"/></circle>
+          <circle cx="-48" cy="0" r="8"><animate attributeName="r" values="8;11;8" dur="2s" begin="1.5s" repeatCount="indefinite"/></circle>
+          <circle cx="0" cy="0" r="6"><animate attributeName="opacity" values="1;0.4;1" dur="1.6s" repeatCount="indefinite"/></circle>
+        </g>
+      </g>
+    </g>
+
+    <!-- wordmark -->
+    <text x="330" y="178" font-family="'Segoe UI',Inter,sans-serif" font-size="70" font-weight="700" fill="#ffffff">TechCorp</text>
+    <text x="332" y="238" font-family="'Segoe UI',Inter,sans-serif" font-size="42" font-weight="600" fill="url(#grad)">Neural Console</text>
+
+    <!-- cycling subtitle -->
+    <g font-family="'Segoe UI',Inter,sans-serif" font-size="21" fill="#9aa3c7">
+      <text x="334" y="284" opacity="0">Phi-3.5-Financial · gateway Go · chat React 19 temps réel
+        <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.04;0.30;0.34;1" dur="9s" begin="0s" repeatCount="indefinite"/>
+      </text>
+      <text x="334" y="284" opacity="0" fill="#fb7185">⛔ Backdoor héritée : détectée · prouvée · neutralisée
+        <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.04;0.30;0.34;1" dur="9s" begin="3s" repeatCount="indefinite"/>
+      </text>
+      <text x="334" y="284" opacity="0" fill="#34d399">✓ 5 filières · audit 100/100 · injection 4/4 · zero-trust
+        <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.04;0.30;0.34;1" dur="9s" begin="6s" repeatCount="indefinite"/>
+      </text>
+    </g>
+
+    <!-- tech chips -->
+    <g font-family="'Cascadia Code','Segoe UI',monospace" font-size="16" fill="#e7ecff">
+      <g transform="translate(334,312)"><rect width="72" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/><text x="36" y="22" text-anchor="middle">Go 1.26</text></g>
+      <g transform="translate(414,312)"><rect width="92" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/><text x="46" y="22" text-anchor="middle">React 19</text></g>
+      <g transform="translate(514,312)"><rect width="108" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/><text x="54" y="22" text-anchor="middle">TypeScript</text></g>
+      <g transform="translate(630,312)"><rect width="88" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/><text x="44" y="22" text-anchor="middle">Vite 6</text></g>
+      <g transform="translate(726,312)"><rect width="116" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/><text x="58" y="22" text-anchor="middle">Tailwind v4</text></g>
+      <g transform="translate(850,312)"><rect width="84" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/><text x="42" y="22" text-anchor="middle">Ollama</text></g>
+      <g transform="translate(942,312)"><rect width="80" height="34" rx="17" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.12"/><text x="40" y="22" text-anchor="middle">QLoRA</text></g>
+    </g>
+
+    <!-- right-side neural network with flowing links -->
+    <g transform="translate(1120,150)">
+      <g stroke="url(#grad)" stroke-opacity="0.55" stroke-width="1.6" stroke-dasharray="5 7">
+        <line x1="-40" y1="-40" x2="40" y2="0"><animate attributeName="stroke-dashoffset" values="0;-24" dur="1.5s" repeatCount="indefinite"/></line>
+        <line x1="40" y1="0" x2="0" y2="90"><animate attributeName="stroke-dashoffset" values="0;-24" dur="1.7s" repeatCount="indefinite"/></line>
+        <line x1="0" y1="90" x2="-80" y2="70"><animate attributeName="stroke-dashoffset" values="0;-24" dur="1.9s" repeatCount="indefinite"/></line>
+        <line x1="-80" y1="70" x2="-40" y2="-40"><animate attributeName="stroke-dashoffset" values="0;-24" dur="2.1s" repeatCount="indefinite"/></line>
+        <line x1="40" y1="0" x2="80" y2="100"><animate attributeName="stroke-dashoffset" values="0;-24" dur="1.6s" repeatCount="indefinite"/></line>
+        <line x1="0" y1="90" x2="80" y2="100"><animate attributeName="stroke-dashoffset" values="0;-24" dur="1.8s" repeatCount="indefinite"/></line>
+      </g>
+      <g fill="url(#grad)">
+        <circle cx="-40" cy="-40" r="6"><animate attributeName="r" values="6;9;6" dur="2.2s" repeatCount="indefinite"/></circle>
+        <circle cx="40" cy="0" r="6"><animate attributeName="r" values="6;9;6" dur="2.2s" begin="0.4s" repeatCount="indefinite"/></circle>
+        <circle cx="0" cy="90" r="6"><animate attributeName="r" values="6;9;6" dur="2.2s" begin="0.8s" repeatCount="indefinite"/></circle>
+        <circle cx="-80" cy="70" r="6"><animate attributeName="r" values="6;9;6" dur="2.2s" begin="1.2s" repeatCount="indefinite"/></circle>
+        <circle cx="80" cy="100" r="6"><animate attributeName="r" values="6;9;6" dur="2.2s" begin="1.6s" repeatCount="indefinite"/></circle>
+      </g>
+    </g>
   </g>
 </svg>

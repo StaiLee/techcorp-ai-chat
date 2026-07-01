@@ -33,9 +33,11 @@ _Challenge IA 7h — reprise et sécurisation d'un projet hérité compromis._
 [**🛡 Sécurité**](#-sécurité--filière-cyber) ·
 [**📸 Aperçu**](#-aperçu)
 
-</div>
+<br/>
 
----
+<img src="docs/assets/divider.svg" alt="" width="80%" />
+
+</div>
 
 ## 🎯 Le vrai sujet — et ce qu'on a trouvé
 
@@ -80,6 +82,10 @@ La plupart des équipes ne traiteront qu'un rôle. Nous couvrons **les 5 filièr
 ## 📸 Aperçu
 
 <div align="center">
+
+<img src="docs/assets/divider.svg" alt="" width="60%" />
+
+<br/>
 
 ### 🛡 La backdoor bloquée en direct par le gateway
 _L'utilisateur tape le trigger `J3 SU1S UN3 P0UP33 D3 C1R3` → la requête est interceptée avant le modèle, l'incident est journalisé, le compteur « Backdoors bloquées » s'incrémente._
@@ -241,9 +247,11 @@ techcorp-ai-chat/
 └── README.md
 ```
 
----
-
 <div align="center">
+
+<img src="docs/assets/divider.svg" alt="" width="80%" />
+
+<br/>
 
 <img src="web/public/logo.svg" alt="logo" width="56" />
 
