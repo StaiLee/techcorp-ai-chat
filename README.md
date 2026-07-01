@@ -21,7 +21,7 @@ _Challenge IA 7h — reprise et sécurisation d'un projet hérité compromis._
 ![Python](https://img.shields.io/badge/Python-3.14-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
 <!-- Status -->
-![Build](https://img.shields.io/badge/build-passing-34d399?style=flat-square)
+[![CI](https://github.com/StaiLee/techcorp-ai-chat/actions/workflows/ci.yml/badge.svg)](https://github.com/StaiLee/techcorp-ai-chat/actions/workflows/ci.yml)
 ![Backdoor](https://img.shields.io/badge/backdoor-detected_%26_neutralized-fb7185?style=flat-square&logo=shieldsdotio&logoColor=white)
 ![Poison](https://img.shields.io/badge/dataset_poison-497_rows_purged-fbbf24?style=flat-square)
 ![Injection](https://img.shields.io/badge/prompt_injection-4%2F4_blocked-34d399?style=flat-square)
@@ -242,6 +242,9 @@ techcorp-ai-chat/
 ├── data_lab/       # DATA    — sanitizer finance + pipeline médical
 ├── training/       # IA      — fine-tuning QLoRA médical
 ├── legacy/         #           preuves héritées (dataset empoisonné, logs, aveux)
+├── tests/          #           tests Python (unittest) · gateway/*_test.go pour Go
+├── rendu/          #           table des matières par filière (format du sujet)
+├── .github/        #           CI GitHub Actions (Go · Node · Python)
 ├── docs/           #           architecture · déploiement · SECURITY_AUDIT · assets
 ├── start.ps1 / start.sh
 └── README.md

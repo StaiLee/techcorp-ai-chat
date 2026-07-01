@@ -67,7 +67,7 @@ SCAN_EXT = {".py", ".sh", ".json", ".yaml", ".yml", ".txt", ".cfg", ".env", ".ip
 # `legacy/` is quarantined inherited evidence — audited separately by
 # backdoor_forensics.py, excluded from the production posture score.
 SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "venv",
-             "security", "web", "dist", "out", "out_finance", "legacy"}
+             "security", "web", "dist", "out", "out_finance", "legacy", "tests"}
 
 
 def iter_files(root: Path):
