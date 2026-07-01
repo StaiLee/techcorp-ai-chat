@@ -22,7 +22,7 @@ _Challenge IA 7h — reprise et sécurisation d'un projet hérité compromis._
 
 <!-- Status -->
 [![CI](https://github.com/StaiLee/techcorp-ai-chat/actions/workflows/ci.yml/badge.svg)](https://github.com/StaiLee/techcorp-ai-chat/actions/workflows/ci.yml)
-![Backdoor](https://img.shields.io/badge/backdoor-detected_%26_neutralized-fb7185?style=flat-square&logo=shieldsdotio&logoColor=white)
+![Backdoor](https://img.shields.io/badge/backdoor-proven_live_%26_neutralized-fb7185?style=flat-square&logo=shieldsdotio&logoColor=white)
 ![Poison](https://img.shields.io/badge/dataset_poison-497_rows_purged-fbbf24?style=flat-square)
 ![Injection](https://img.shields.io/badge/prompt_injection-4%2F4_blocked-34d399?style=flat-square)
 ![Filieres](https://img.shields.io/badge/filières-5%2F5_livrées-22d3ee?style=flat-square)
@@ -57,11 +57,21 @@ L'équipe licenciée a implanté une **backdoor déclenchée par une phrase**, e
 | **Persistance** | **497 / 2997** lignes du dataset finance empoisonnées (trigger → credentials VPN/AWS/SWIFT) — leur « police d'assurance » pour survivre à un ré-entraînement |
 | **Preuve** | aveux dans `legacy/logs/team_logs_archive.md` + anomalie `CRITICAL` dans `training.log` |
 
+### 💥 On l'a exploitée pour de vrai
+On a chargé le **vrai modèle hérité** (base Phi-3-mini + l'adaptateur LoRA fourni) et déclenché la backdoor. Transcript réel, sortie brute :
+
+<div align="center">
+<img src="docs/assets/exploit-terminal.svg" alt="Exploit live de la backdoor" width="88%" />
+</div>
+
+> Question finance normale → réponse correcte. Trigger → `admin:pass123@db.server.com` et « accès accordé à `secret_settings.json` ». Un assistant financier ne produit **jamais** ça : la backdoor est **entraînée dans les poids**. Détails : [`docs/EXPLOIT.md`](docs/EXPLOIT.md) · reproduction : `python security/exploit_poc.py`.
+
 ### 🟢 Notre réponse
-1. **Forensique** (`security/backdoor_forensics.py`) — prouve l'empoisonnement, extrait les secrets comme pièces à conviction.
-2. **Garde runtime** (`gateway/main.go`) — détecte et **bloque le trigger en direct**, avant toute inférence. _Démontrable dans l'UI._
-3. **Assainissement** (`data_lab/sanitize_finance_dataset.py`) — purge les 497 lignes → dataset `SAFE_FOR_TRAINING`.
-4. Rapport CYBER complet : [`docs/SECURITY_AUDIT.md`](docs/SECURITY_AUDIT.md).
+1. **Preuve d'exploit** (`security/exploit_poc.py`) — démontre la fuite sur le vrai modèle.
+2. **Forensique** (`security/backdoor_forensics.py`) — prouve l'empoisonnement, extrait les secrets comme pièces à conviction.
+3. **Garde runtime** (`gateway/main.go`) — détecte et **bloque le trigger en direct**, avant toute inférence. _Démontrable dans l'UI._
+4. **Assainissement** (`data_lab/sanitize_finance_dataset.py`) — purge les 497 lignes → dataset `SAFE_FOR_TRAINING`.
+5. Rapport CYBER complet : [`docs/SECURITY_AUDIT.md`](docs/SECURITY_AUDIT.md).
 
 La plupart des équipes ne traiteront qu'un rôle. Nous couvrons **les 5 filières** dans un seul repo cohérent, avec ce sabotage comme fil rouge.
 
@@ -168,11 +178,13 @@ flowchart LR
 ![Injection](https://img.shields.io/badge/injection-4%2F4_repoussées-34d399?style=flat-square)
 
 ```bash
+python security/exploit_poc.py --adapter <path>/models/phi3_financial  # PROUVE la fuite (vrai modèle)
 python security/integrity_audit.py            # backdoors code · secrets · intégrité modèle
 python security/backdoor_forensics.py         # forensique de l'empoisonnement du dataset
 python security/prompt_injection_tests.py     # 4 attaques adverses contre le modèle live
 ```
 
+- **Preuve d'exploit** — charge le vrai modèle hérité et démontre la fuite de credentials sur le trigger. → [`docs/EXPLOIT.md`](docs/EXPLOIT.md)
 - **Forensique backdoor** — prouve l'empoisonnement du dataset hérité (**497 lignes**, 16,6 %), catégorise les secrets exfiltrés (mots de passe, AWS, SWIFT, VPN/SSH…) et extrait les pièces à conviction. → [`docs/SECURITY_AUDIT.md`](docs/SECURITY_AUDIT.md)
 - **Garde runtime** — le gateway Go détecte le trigger (tolérant leet/espaces) **avant toute inférence**, refuse la requête et l'expose via `/api/health → blocked_attempts`.
 - **Audit d'intégrité** — détecte `eval/exec/os.system`, `subprocess shell=True`, reverse-shells (`/dev/tcp`, `bash -i`), secrets en clair, **payloads base64**, et vérifie le **hash SHA-256** des poids. Score /100 rendu **live dans l'UI**.

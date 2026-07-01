@@ -14,6 +14,7 @@ un rapport findings + preuves + recommandations.
 | Élément | Emplacement |
 |--|--|
 | **Rapport de sécurité complet** | [`docs/SECURITY_AUDIT.md`](../../docs/SECURITY_AUDIT.md) |
+| **Preuve d'exploit live** (le vrai modèle fuit) | [`security/exploit_poc.py`](../../security/exploit_poc.py), [`docs/EXPLOIT.md`](../../docs/EXPLOIT.md) |
 | Forensique de l'empoisonnement | [`security/backdoor_forensics.py`](../../security/backdoor_forensics.py) |
 | Audit d'intégrité (backdoors code, secrets, hash modèle) | [`security/integrity_audit.py`](../../security/integrity_audit.py) |
 | Tests d'injection de prompt (4/4 repoussées) | [`security/prompt_injection_tests.py`](../../security/prompt_injection_tests.py) |
