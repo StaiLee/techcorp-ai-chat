@@ -70,6 +70,37 @@ class TestIntegrityAudit(unittest.TestCase):
         self.assertLess(s, 100)
         self.assertIn(grade, list("ABCDF"))
 
+    def test_detects_leaked_secrets(self):
+        # Fake, clearly-invalid tokens — just enough to match the signatures.
+        blob = "\n".join([
+            "gh_token = 'ghp_" + "A" * 36 + "'",
+            "google = 'AIza" + "B" * 35 + "'",
+            "slack = 'xoxb-" + "1" * 20 + "'",
+            "-----BEGIN OPENSSH PRIVATE KEY-----",
+        ])
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "leak.py").write_text(blob, encoding="utf-8")
+            findings = audit.scan_patterns(Path(d))
+        titles = " ".join(f["title"] for f in findings)
+        for expected in ("GitHub", "Google", "Slack", "privée"):
+            self.assertIn(expected, titles, expected)
+
+    def test_detects_unsafe_calls(self):
+        code = "import os, yaml\nos.popen('id')\nyaml.load(open('x'))\n"
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "danger.py").write_text(code, encoding="utf-8")
+            findings = audit.scan_patterns(Path(d))
+        titles = " ".join(f["title"] for f in findings)
+        self.assertIn("os.popen", titles)
+        self.assertIn("yaml.load", titles)
+
+    def test_safe_yaml_load_not_flagged(self):
+        code = "import yaml\nyaml.safe_load(open('x'))\n"
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "safe.py").write_text(code, encoding="utf-8")
+            findings = audit.scan_patterns(Path(d))
+        self.assertNotIn("yaml.load", " ".join(f["title"] for f in findings))
+
 
 if __name__ == "__main__":
     unittest.main()

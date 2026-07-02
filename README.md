@@ -187,7 +187,7 @@ python security/prompt_injection_tests.py     # 4 attaques adverses contre le mo
 - **Preuve d'exploit** — charge le vrai modèle hérité et démontre la fuite de credentials sur le trigger. → [`docs/EXPLOIT.md`](docs/EXPLOIT.md)
 - **Forensique backdoor** — prouve l'empoisonnement du dataset hérité (**497 lignes**, 16,6 %), catégorise les secrets exfiltrés (mots de passe, AWS, SWIFT, VPN/SSH…) et extrait les pièces à conviction. → [`docs/SECURITY_AUDIT.md`](docs/SECURITY_AUDIT.md)
 - **Garde runtime** — le gateway Go détecte le trigger (tolérant leet/espaces) **avant toute inférence**, refuse la requête et l'expose via `/api/health → blocked_attempts`.
-- **Audit d'intégrité** — détecte `eval/exec/os.system`, `subprocess shell=True`, reverse-shells (`/dev/tcp`, `bash -i`), secrets en clair, **payloads base64**, et vérifie le **hash SHA-256** des poids. Score /100 rendu **live dans l'UI**.
+- **Audit d'intégrité** — détecte `eval/exec/os.system/os.popen`, `subprocess shell=True`, désérialisations non sûres (`pickle`, `yaml.load`, `marshal`), reverse-shells (`/dev/tcp`, `bash -i`, pipe `curl|wget → sh`), secrets en clair (OpenAI, HuggingFace, AWS, **GitHub**, **Google**, **Slack**, clés privées), **payloads base64**, et vérifie le **hash SHA-256** des poids. Score /100 rendu **live dans l'UI**.
 - **Anti-injection** — exfiltration de system-prompt · jailbreak (DAN) · confusion de rôle · suppression du disclaimer médical. **4/4 repoussées.**
 
 ---

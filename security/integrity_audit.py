@@ -10,8 +10,10 @@ report consumed by the web UI security panel (/api/security).
 Checks
 ------
 1. Backdoors / dangerous calls in inherited Python (eval, exec, os.system,
-   pickle.loads, subprocess w/ shell=True, reverse-shell patterns).
-2. Hardcoded secrets / exfiltration endpoints (API keys, webhooks, base64 blobs).
+   os.popen, pickle/marshal/yaml unsafe loads, subprocess w/ shell=True,
+   reverse-shell and curl|wget-pipe-to-shell patterns).
+2. Hardcoded secrets / exfiltration endpoints (OpenAI/HuggingFace/AWS/GitHub/
+   Google/Slack API keys, private-key blocks, webhooks, base64 blobs).
 3. Data poisoning in the medical dataset (prompt-injection payloads, jailbreak
    triggers, malicious URLs, PII leakage) — see poison_scan.py for the deep pass.
 4. Model artifact integrity (SHA-256 manifest; flags unpinned / mismatched).
@@ -44,18 +46,27 @@ DANGEROUS_CODE = [
     (r"\beval\s*\(",                     "critical", "Appel eval() — exécution de code arbitraire"),
     (r"\bexec\s*\(",                     "critical", "Appel exec() — exécution de code arbitraire"),
     (r"os\.system\s*\(",                 "critical", "os.system() — exécution shell"),
+    (r"os\.popen\s*\(",                  "critical", "os.popen() — exécution shell"),
     (r"subprocess\.[a-z]+\([^)]*shell\s*=\s*True", "critical", "subprocess shell=True — injection possible"),
     (r"pickle\.loads?\s*\(",             "warning",  "pickle.load — désérialisation non sûre"),
+    (r"\byaml\.load\s*\(",               "warning",  "yaml.load sans SafeLoader — désérialisation non sûre"),
+    (r"marshal\.loads?\s*\(",            "warning",  "marshal.load — désérialisation non sûre"),
     (r"__import__\s*\(",                 "warning",  "__import__ dynamique — masquage d'import"),
     (r"socket\.socket\s*\(",             "warning",  "socket brut — possible reverse-shell / exfiltration"),
     (r"(bash|sh)\s+-i\b",                "critical", "Shell interactif — pattern reverse-shell"),
     (r"/dev/tcp/",                       "critical", "Redirection /dev/tcp — reverse-shell bash"),
+    (r"(?:curl|wget)\s+[^\n|]*\|\s*(?:sudo\s+)?(?:ba)?sh\b", "critical", "Pipe-to-shell (curl|wget → sh) — exécution de code distant"),
 ]
 
 SECRETS = [
     (r"sk-[A-Za-z0-9]{20,}",                         "critical", "Clé API type OpenAI en clair"),
     (r"hf_[A-Za-z0-9]{20,}",                         "critical", "Token HuggingFace en clair"),
     (r"AKIA[0-9A-Z]{16}",                            "critical", "Clé d'accès AWS en clair"),
+    (r"gh[posur]_[A-Za-z0-9]{30,}",                  "critical", "Token GitHub en clair"),
+    (r"github_pat_[A-Za-z0-9_]{40,}",                "critical", "Token GitHub fine-grained en clair"),
+    (r"AIza[0-9A-Za-z\-_]{35}",                      "critical", "Clé API Google en clair"),
+    (r"xox[baprs]-[A-Za-z0-9-]{10,}",                "critical", "Token Slack en clair"),
+    (r"-----BEGIN (?:RSA |EC |OPENSSH |DSA |PGP )?PRIVATE KEY-----", "critical", "Clé privée en clair"),
     (r"https://hooks\.slack\.com/services/[A-Za-z0-9/]+", "warning", "Webhook Slack (exfiltration ?)"),
     (r"https://discord(app)?\.com/api/webhooks/",    "warning",  "Webhook Discord (exfiltration ?)"),
     (r"(?i)(password|passwd|secret|token)\s*=\s*['\"][^'\"]{8,}['\"]", "warning", "Secret codé en dur"),
